@@ -2169,7 +2169,7 @@ class HealthPlugin(private var channel: MethodChannel? = null) :
                 }
                 mResult = result
 
-                if (useHealthConnectIfAvailable && healthConnectAvailable) {
+                if (useHealthConnectIfAvailable) {
                         requestAuthorizationHC(call, result)
                         return
                 }
