@@ -2169,6 +2169,8 @@ class HealthPlugin(private var channel: MethodChannel? = null) :
                 }
                 mResult = result
 
+                checkAvailability()
+
                 if (useHealthConnectIfAvailable) {
                         if(healthConnectAvailable) {
                                 requestAuthorizationHC(call, result)
@@ -2448,6 +2450,7 @@ class HealthPlugin(private var channel: MethodChannel? = null) :
         fun checkAvailability() {
                 healthConnectStatus = HealthConnectClient.getSdkStatus(context!!)
                 healthConnectAvailable = healthConnectStatus == HealthConnectClient.SDK_AVAILABLE
+                return healthConnectAvailable
         }
 
         private fun installHealthConnect(call: MethodCall, result: Result) {
