@@ -2170,8 +2170,13 @@ class HealthPlugin(private var channel: MethodChannel? = null) :
                 mResult = result
 
                 if (useHealthConnectIfAvailable) {
-                        requestAuthorizationHC(call, result)
+                        if(healthConnectAvailable) {
+                                requestAuthorizationHC(call, result)
                         return
+                        } else {
+                             result.error("HEALTH_CONNECT_NOT_AVAILABLE", "HealthConnect is not available on this device", null)   
+                             return
+                        }
                 }
 
                 val optionsToRegister = callToHealthTypes(call)
