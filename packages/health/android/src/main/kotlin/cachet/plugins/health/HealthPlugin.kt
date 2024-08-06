@@ -29,6 +29,8 @@ import androidx.health.connect.client.units.*
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.fitness.Fitness
+import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.engine.FlutterEngine
 import com.google.android.gms.fitness.FitnessActivities
 import com.google.android.gms.fitness.FitnessOptions
 import com.google.android.gms.fitness.data.*
@@ -2387,9 +2389,21 @@ class HealthPlugin(private var channel: MethodChannel? = null) :
                 return workoutTypeMap[type] ?: FitnessActivities.UNKNOWN
         }
 
+        fun redirectToHealthApp(call: MethodCall, result: Result) {
+                val packageManager = context!!.packageManager
+                val intent = packageManager.getLaunchIntentForPackage("com.google.android.apps.healthdata")
+                if (intent != null) {
+                    context!!.startActivity(intent)
+                    result.success(null)
+                } else {
+                    result.error("UNAVAILABLE", "Health Connect app is not installed.", null)
+                }
+        }
+
         /** Handle calls from the MethodChannel */
         override fun onMethodCall(call: MethodCall, result: Result) {
                 when (call.method) {
+                        "redirectToHealthApp" -> redirectToHealthApp(call, result)
                         "installHealthConnect" -> installHealthConnect(call, result)
                         "useHealthConnectIfAvailable" -> useHealthConnectIfAvailable(call, result)
                         "getHealthConnectSdkStatus" -> getHealthConnectSdkStatus(call, result)

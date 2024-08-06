@@ -160,6 +160,19 @@ class Health {
     }
   }
 
+  /// Redirects the user to the Health Connect app (or equivalent on iOS).
+  Future<void> redirectToHealthApp() async {
+    try {
+      await _channel.invokeMethod('redirectToHealthApp');
+    } on PlatformException catch (e) {
+      debugPrint(
+          '$runtimeType - Exception in redirectToHealthApp(): ${e.message}');
+    } catch (e) {
+      debugPrint(
+          '$runtimeType - Unexpected exception in redirectToHealthApp(): $e');
+    }
+  }
+
   /// Prompt the user to install the Health Connect app via the installed store
   /// (most likely Play Store).
   ///
